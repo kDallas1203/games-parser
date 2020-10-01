@@ -7,6 +7,14 @@ from filters import filters
 max_page = 10
 
 
+def detect_max_page(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    pages = soup.find(class_='pages').findChildren('a')
+    last_page = pages[-2].text
+    print('Last page was detected {}'.format(last_page))
+    return int(last_page)
+
+
 def init():
     i = 1
     page_items = []
@@ -28,6 +36,13 @@ def get_page(page_number):
     filters['p'] = page_number
     r = requests.get('https://stopgame.ru/games/filter/', params=filters)
     print('Request to page {} successful'.format(page_number))
+
+    if page_number == 1:
+        global max_page
+        last_page = detect_max_page(r.text)
+        if last_page:
+            max_page = last_page
+
     result = parse_items(r.text)
     return result
 
