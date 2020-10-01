@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import json
+from filters import filters
 
-max_page = 20
+max_page = 10
 
 
 def init():
@@ -24,13 +25,8 @@ def init():
 
 def get_page(page_number):
     print('Request to page {}'.format(page_number))
-    payload = {
-        'year_start': 2010,
-        'year_end': 2020,
-        'platform': ['PS4', 'PS5', 'XBOXSX', 'XONE'],
-        'p': page_number
-    }
-    r = requests.get('https://stopgame.ru/games/filter/', params=payload)
+    filters['p'] = page_number
+    r = requests.get('https://stopgame.ru/games/filter/', params=filters)
     print('Request to page {} successful'.format(page_number))
     result = parse_items(r.text)
     return result
