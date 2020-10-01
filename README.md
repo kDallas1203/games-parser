@@ -1,4 +1,5 @@
-# games-parser
+# Stopgame parser
+Скрипт для парсинга игр с сайта stopgame и сохранением в json
 
 ```
 pip install -r requirements.txt
